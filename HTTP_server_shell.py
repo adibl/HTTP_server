@@ -7,9 +7,9 @@
  Usage: Fill the missing functions and constants
 """
 # TO DO: import modules
-
-# TO DO: set constants
 import socket
+# TO DO: set constants
+
 
 QUEUE_SIZE = 10
 IP = '0.0.0.0'
