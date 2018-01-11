@@ -11,18 +11,19 @@ import socket
 import os
 # TO DO: set constants
 
-DEFALT_FILE = 'index'
+DEFEALT_FILE = '\\index.html'
 HTTP_VERSION = 'HTTP/1.1'
-DEFAULT_URL = "F:\python\HTTP_server-master\webroot\\"
+DEFAULT_URL = "D:\\adi\\Documents\\pyton\\HTTP_server\\webroot"
 REQUEST_CODE = 'GET'
-REDIRECTION_DICTIONARY = ['\moved']
 QUEUE_SIZE = 10
 IP = '0.0.0.0'
 PORT = 80
 SOCKET_TIMEOUT = 2
 
+
 def get_file_data(file_name):
     """
+    done
     Get data from file
     :param file_name: the name of the file
     :return: the file data in a string
@@ -34,17 +35,18 @@ def get_file_data(file_name):
 
 def handle_client_request(resource, client_socket):
     """
+    get the http valid request
     Check the required resource, generate proper HTTP response and send
     to client
     :param resource: the required resource
     :param client_socket: a socket for the communication with the client
     :return: None
     """
-    """
+"""
     # TO DO : add code that given a resource (URL and parameters) generates
     # the proper response
     if resource == '':
-        uri = DEFAULT_URL + DEFALT_FILE
+        uri = DEFAULT_URL + DEFEALT_FILE
     else:
         uri = resource
 
@@ -64,10 +66,11 @@ def handle_client_request(resource, client_socket):
     data = get_file_data(filename)
     http_response = http_header + data
     client_socket.send(http_response)
-    """
 
+"""
 def validate_http_request(request):
     """
+    done + ceacked
     Check if request is a valid HTTP request and returns TRUE / FALSE and
     the requested URL
     :param request: the request which was received from the client
@@ -76,19 +79,24 @@ def validate_http_request(request):
     """
     # TO DO: write function
     fildes = request.split(' ')
+    if fildes[1] == '\\':
+        fildes[1] = DEFAULT_URL + DEFEALT_FILE
+    else:
+        fildes[1] = DEFAULT_URL + fildes[1]
     if not fildes[0] == REQUEST_CODE:
         return False
     if not os.path.exists(fildes[1]):
         return False
     if not fildes[2] == HTTP_VERSION + '\r\n':
         return False
-    return True
+    return True, fildes
 
 
 
 
 def handle_client(client_socket):
     """
+    main funcsion, can handel all the client needs
     Handles client requests: verifies client's requests are legal HTTP, calls
     function to handle the requests
     :param client_socket: the socket for the communication with the client
@@ -98,7 +106,7 @@ def handle_client(client_socket):
     while True:
         # TO DO: insert code that receives client request
         # ...
-        valid_http, resource = validate_http_request(client_request)
+        valid_http, resource = validate_http_request(fildes)
         if valid_http:
             print 'Got a valid HTTP request'
             handle_client_request(resource, client_socket)
@@ -133,8 +141,9 @@ def main():
 
 
 if __name__ == "__main__":
-    assert validate_http_request('GET / HTTP/1.1\r\n')
-    assert not validate_http_request('GEV / HTTP/1.2\r\n')
-    assert not validate_http_request('GET /vv HTTP/1.1\r\n')
+    assert validate_http_request('GET \\ HTTP/1.1\r\n')
+    assert not validate_http_request('GEV \\ HTTP/1.2\r\n')
+    assert not validate_http_request('GET \\vv HTTP/1.1\r\n')
+    assert validate_http_request('GET \\css\\doremon.css HTTP/1.1\r\n')
     main()
 
