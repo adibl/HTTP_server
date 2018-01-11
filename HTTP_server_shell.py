@@ -8,14 +8,18 @@
 """
 # TO DO: import modules
 import socket
+import os
 # TO DO: set constants
 
-
+DEFALT_FILE = 'index'
+HTTP_VERSION = 'HTTP/1.1'
+DEFAULT_URL = "F:\python\HTTP_server-master\webroot\\"
+REQUEST_CODE = 'GET'
+REDIRECTION_DICTIONARY = ['\moved']
 QUEUE_SIZE = 10
 IP = '0.0.0.0'
 PORT = 80
 SOCKET_TIMEOUT = 2
-
 
 def get_file_data(file_name):
     """
@@ -23,6 +27,9 @@ def get_file_data(file_name):
     :param file_name: the name of the file
     :return: the file data in a string
     """
+    with open(file_name, 'r') as handel:
+        text = handel.readall()
+    return text
 
 
 def handle_client_request(resource, client_socket):
@@ -33,11 +40,11 @@ def handle_client_request(resource, client_socket):
     :param client_socket: a socket for the communication with the client
     :return: None
     """
-    """ """
+    """
     # TO DO : add code that given a resource (URL and parameters) generates
     # the proper response
     if resource == '':
-        uri = DEFAULT_URL
+        uri = DEFAULT_URL + DEFALT_FILE
     else:
         uri = resource
 
@@ -57,7 +64,7 @@ def handle_client_request(resource, client_socket):
     data = get_file_data(filename)
     http_response = http_header + data
     client_socket.send(http_response)
-
+    """
 
 def validate_http_request(request):
     """
@@ -68,6 +75,16 @@ def validate_http_request(request):
     the requested resource )
     """
     # TO DO: write function
+    fildes = request.split(' ')
+    if not fildes[0] == REQUEST_CODE:
+        return False
+    if not os.path.exists(fildes[1]):
+        return False
+    if not fildes[2] == HTTP_VERSION + '\r\n':
+        return False
+    return True
+
+
 
 
 def handle_client(client_socket):
@@ -116,5 +133,8 @@ def main():
 
 
 if __name__ == "__main__":
-    # Call the main handler function
+    assert validate_http_request('GET / HTTP/1.1\r\n')
+    assert not validate_http_request('GEV / HTTP/1.2\r\n')
+    assert not validate_http_request('GET /vv HTTP/1.1\r\n')
     main()
+
