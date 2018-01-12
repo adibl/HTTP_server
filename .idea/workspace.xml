@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="01e9e610-4ef5-4d46-aa32-910bea829c10" name="Default" comment="fix">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HTTP_server_shell.py" afterPath="$PROJECT_DIR$/HTTP_server_shell.py" />
+    <list default="true" id="01e9e610-4ef5-4d46-aa32-910bea829c10" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="HTTP_server.iws" />
@@ -29,7 +28,7 @@
       <file leaf-file-name="HTTP_server_shell.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="115" column="26" selection-start="3506" selection-end="3506" vertical-scroll-proportion="1.3492334" vertical-offset="1716" max-vertical-offset="4290">
+            <state line="88" column="18" selection-start="2594" selection-end="2594" vertical-scroll-proportion="2.1874285" vertical-offset="0" max-vertical-offset="4290">
               <folding />
             </state>
           </provider>
@@ -130,13 +129,13 @@
     <property name="SearchEverywhereHistory" value="" />
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="67" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="63" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="67" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="63" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="67" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="68" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="714" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="721" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="73" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
@@ -364,7 +363,11 @@
       <created>1515776990423</created>
       <updated>1515776990423</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="fix unique eri bag">
+      <created>1515778386929</created>
+      <updated>1515778386929</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -380,7 +383,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39893618" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982087" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33404255" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33404255" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32978722" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -411,7 +414,8 @@
     <MESSAGE value="mid commit" />
     <MESSAGE value="have first connecsion with second packet bag" />
     <MESSAGE value="worked code, witout documentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="worked code, witout documentation" />
+    <MESSAGE value="fix unique eri bag" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix unique eri bag" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -482,7 +486,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="115" column="26" selection-start="3506" selection-end="3506" vertical-scroll-proportion="1.3492334" vertical-offset="1716" max-vertical-offset="4290">
+        <state line="88" column="18" selection-start="2594" selection-end="2594" vertical-scroll-proportion="2.1874285" vertical-offset="0" max-vertical-offset="4290">
           <folding />
         </state>
       </provider>
