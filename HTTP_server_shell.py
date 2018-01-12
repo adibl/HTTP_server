@@ -9,14 +9,13 @@
 # TO DO: import modules
 import socket
 import os
-import re
 # TO DO: set constants
 
 DEFEALT_FILE = '/index.html'
 HTTP_VERSION = 'HTTP/1.1'
 DEFAULT_URL = "D:\\adi\\Documents\\python\\HTTP_server\\webroot\\"
 REQUEST_CODE = 'GET'
-QUEUE_SIZE = 1
+QUEUE_SIZE = 10
 UNIQUE_URI = {'/forbidden': '403 FORBIDDEN', '/moved': '302 MOVED TEMPORARILY',
               '/error': '500 INTERNAL SERVER ERROR'}
 BAD_REQUEST = '400 BAD REQUEST'
@@ -26,8 +25,8 @@ IP = '0.0.0.0'
 PORT = 80
 MAX_PACKET = 1024
 IS_TIMEOUT = True
-SOCKET_TIMEOUT = 10
-FILE_TYPES_HEADER = {'html': 'text/html;charset=utf-8', 'jpg': 'image/jpeg', 'text/css': 'css',
+SOCKET_TIMEOUT = 0.5
+FILE_TYPES_HEADER = {'html': 'text/html;charset=utf-8', 'jpg': 'image/jpeg', 'css': 'text/css',
                      'js': 'text/javascript; charset=UTF-8', 'txt': 'text/plain', 'ico': "image/x-icon",
                      'gif': 'image/jpeg', 'png': 'image/png'}
 
@@ -50,8 +49,9 @@ def get_file_data(file_name):
     :param file_name: the name of the file
     :return: the file data in a string
     """
-    with open(file_name, 'r') as handel:
-        text = handel.read()
+    text = ''
+    with open(file_name, 'rb') as handel:
+        text += handel.read()
     return text
 
 
@@ -68,15 +68,17 @@ def handle_client_request(resource, client_socket):
     http_header = HTTP_VERSION + " "
     is_valid, path = resource
     if not is_valid:
-        http_header += path + "\r\n"
+        http_header += path +'\r\n'
     else:
         file_type = path.split('.')[-1]
+        http_header += VALID_REQUEST + '\r\n'
         http_header += 'Content-Type:' + FILE_TYPES_HEADER.get(file_type) + '\r\n'
         data = get_file_data(resource[1])
         http_header += 'Content-Length:' + str(len(data))
-    http_header += '\r\n'
+    http_header += '\r\n\r\n'
     http_response = http_header + data
-    print http_response
+    print 'request:'+str(resource)
+    print 'responce:'+http_response
     return http_response
 
 
@@ -91,6 +93,8 @@ def valid_URI(uri):
     elif uri in UNIQUE_URI:
         return False, UNIQUE_URI.get(uri)
     else:
+        uri = uri.replace('/', '\\')
+        print DEFAULT_URL + uri[1:]
         return True, DEFAULT_URL + uri[1:]
 
 
@@ -136,12 +140,15 @@ def handle_client(client_socket):
     print 'Client connected'
     while True:
         request = recv_http(client_socket)
+        print 'rec:' + request
         print 'pas recv'
         valid_http, resource = validate_http_request(request)
         if valid_http:
             print 'Got a valid HTTP request'
             http_response = handle_client_request(resource, client_socket)
-            client_socket.sendall(http_response)
+            err = client_socket.sendall(http_response)
+            if err is not None:
+                print 'err:'+err
         else:
             print 'Error: Not a valid HTTP request'
             print HTTP_VERSION + resource + '\r\n'
