@@ -77,8 +77,6 @@ def handle_client_request(resource, client_socket):
         http_header += 'Content-Length:' + str(len(data))
     http_header += '\r\n\r\n'
     http_response = http_header + data
-    print 'request:'+str(resource)
-    print 'responce:'+http_response
     return http_response
 
 
@@ -94,7 +92,6 @@ def valid_URI(uri):
         return False, UNIQUE_URI.get(uri)
     else:
         uri = uri.replace('/', '\\')
-        print DEFAULT_URL + uri[1:]
         return True, DEFAULT_URL + uri[1:]
 
 
@@ -113,8 +110,10 @@ def validate_http_request(request):
     fileds[0] = fileds[0].split(' ')
     request_line = fileds[0][:]
     is_valid, path = valid_URI(request_line[1])
+    print is_valid
+    print path
     if not is_valid:
-        responce += path
+        return False, path
     elif not fileds.pop() == '':
         return False, BAD_REQUEST
     elif not request_line[0] == REQUEST_CODE:
