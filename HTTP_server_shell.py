@@ -20,10 +20,24 @@ BAD_REQUEST = '400'
 NOT_FOUND = '404'
 IP = '0.0.0.0'
 PORT = 80
+MAX_PACKET = 1024
 SOCKET_TIMEOUT = 2
 FILE_TYPES_HEADER = {'Html': 'text/html;charset=utf-8', 'jpg': 'image/jpeg', 'text/css': 'css',
                      'js': 'text/javascript; charset=UTF-8', 'txt': 'text/plain', 'ico': "image/x-icon",
                      'gif': 'image/jpeg', 'png': 'image/png'}
+
+
+def recv_http(client_socket):
+    """
+    recv an http request
+    :client_socket: the client socket
+    :return: return the http request thet receved from the client
+    """
+    request = ""
+    while request.count('\r\n'):
+        request += client_socket.recv(MAX_PACKET)
+    return request
+
 
 def get_file_data(file_name):
     """
@@ -46,28 +60,29 @@ def handle_client_request(resource, client_socket):
     :param client_socket: a socket for the communication with the client
     :return: None
     """
+    request = recv_http(client_socket)
+    # TO DO: check if URI had been redirected, not available or other error
+    # code. For example: move befor the uri cange
+    if uri in REDIRECTION_DICTIONARY:
+        http_header += '302 FOUND'
+        # TO DO: send 302 redirection response
     http_header = HTTP_VERSION + " "
     if resource == '':
         uri = DEFAULT_URL + DEFEALT_FILE
     else:
         uri = resource
 
-    # TO DO: check if URL had been redirected, not available or other error
-    # code. For example:
-    if url in REDIRECTION_DICTIONARY:
-        http_header += '302 FOUND'
-        # TO DO: send 302 redirection response
-    http_header += '\r\n'
+
 
     # TO DO: extract requested file tupe from URL (html, jpg etc)
-    http_header += FILE_TYPES_HEADER.get(file_type)
+    http_header += 'file ..:' + FILE_TYPES_HEADER.get(file_type) + '\r\n'
     # TO DO: handle all other headers
 
     # TO DO: read the data from the file
     data = get_file_data(filename)
     http_header += '\r\n'
     http_response = http_header + data
-    client_socket.send(http_response)
+    client_socket.sendall(http_response)
 
 
 def validate_http_request(request):
@@ -82,23 +97,19 @@ def validate_http_request(request):
     # TO DO: write function
     fileds = request.split('\r\n')
     request_line = fileds[0].split(' ')
-    print fileds
-    if not (fileds[1] == "" and fileds[-1] == ""):
-        print 'not end line'
+    if not fileds.pop() == '':
         return False, BAD_REQUEST
-    print request_line
+    if not (fileds[1] == "" and fileds[-1] == ""):
+        return False, BAD_REQUEST
     if request_line[1] == '/':
         request_line[1] = DEFAULT_URL + DEFEALT_FILE
     else:
         request_line[1] = DEFAULT_URL + request_line[1]
     if not request_line[0] == REQUEST_CODE:
-        print 'dont get'
         return False, BAD_REQUEST
     if not os.path.exists(request_line[1]):
-        print 'path dont exzist'
         return False, NOT_FOUND
     if not request_line[2] == HTTP_VERSION:
-        print 'not version'
         return False, BAD_REQUEST
     return True, fileds
 
@@ -152,9 +163,9 @@ def main():
 
 
 if __name__ == "__main__":
-    assert validate_http_request('GET / HTTP/1.1\r\n')[0]
-    assert not validate_http_request('GEV / HTTP/1.2\r\n')[0]
-    assert not validate_http_request('GET /vv HTTP/1.1\r\n')[0]
-    assert validate_http_request('GET /css\\doremon.css HTTP/1.1\r\n')[0]
+    assert validate_http_request('GET / HTTP/1.1\r\n\r\n')[0]
+    assert not validate_http_request('GEV / HTTP/1.2\r\n\r\n')[0]
+    assert not validate_http_request('GET /vv HTTP/1.1\r\n\r\n')[0]
+    assert validate_http_request('GET /css\\doremon.css HTTP/1.1\r\n\r\n')[0]
     main()
 
