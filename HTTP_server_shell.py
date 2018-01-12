@@ -9,6 +9,7 @@
 # TO DO: import modules
 import socket
 import os
+import re
 # TO DO: set constants
 
 DEFEALT_FILE = '/index.html'
@@ -16,26 +17,29 @@ HTTP_VERSION = 'HTTP/1.1'
 DEFAULT_URL = "D:\\adi\\Documents\\python\\HTTP_server\\webroot\\"
 REQUEST_CODE = 'GET'
 QUEUE_SIZE = 1
-BAD_REQUEST = '400'
-NOT_FOUND = '404'
+UNIQUE_URI = {'/forbidden': '403 FORBIDDEN', '/moved': '302 MOVED TEMPORARILY',
+              '/error': '500 INTERNAL SERVER ERROR'}
+BAD_REQUEST = '400 BAD REQUEST'
+NOT_FOUND = '404 NOT FOUND'
+VALID_REQUEST = '200 OK'
 IP = '0.0.0.0'
 PORT = 80
 MAX_PACKET = 1024
-SOCKET_TIMEOUT = 2
-FILE_TYPES_HEADER = {'Html': 'text/html;charset=utf-8', 'jpg': 'image/jpeg', 'text/css': 'css',
+IS_TIMEOUT = True
+SOCKET_TIMEOUT = 10
+FILE_TYPES_HEADER = {'html': 'text/html;charset=utf-8', 'jpg': 'image/jpeg', 'text/css': 'css',
                      'js': 'text/javascript; charset=UTF-8', 'txt': 'text/plain', 'ico': "image/x-icon",
                      'gif': 'image/jpeg', 'png': 'image/png'}
 
 
 def recv_http(client_socket):
     """
+    need fix
     recv an http request
     :client_socket: the client socket
     :return: return the http request thet receved from the client
     """
-    request = ""
-    while request.count('\r\n'):
-        request += client_socket.recv(MAX_PACKET)
+    request = client_socket.recv(MAX_PACKET)
     return request
 
 
@@ -47,7 +51,7 @@ def get_file_data(file_name):
     :return: the file data in a string
     """
     with open(file_name, 'r') as handel:
-        text = handel.readall()
+        text = handel.read()
     return text
 
 
@@ -58,31 +62,36 @@ def handle_client_request(resource, client_socket):
     to client
     :param resource: the required resource
     :param client_socket: a socket for the communication with the client
-    :return: None
+    :return: http request to send
     """
-    request = recv_http(client_socket)
-    # TO DO: check if URI had been redirected, not available or other error
-    # code. For example: move befor the uri cange
-    if uri in REDIRECTION_DICTIONARY:
-        http_header += '302 FOUND'
-        # TO DO: send 302 redirection response
+    data = ""
     http_header = HTTP_VERSION + " "
-    if resource == '':
-        uri = DEFAULT_URL + DEFEALT_FILE
+    is_valid, path = resource
+    if not is_valid:
+        http_header += path + "\r\n"
     else:
-        uri = resource
-
-
-
-    # TO DO: extract requested file tupe from URL (html, jpg etc)
-    http_header += 'file ..:' + FILE_TYPES_HEADER.get(file_type) + '\r\n'
-    # TO DO: handle all other headers
-
-    # TO DO: read the data from the file
-    data = get_file_data(filename)
+        file_type = path.split('.')[-1]
+        http_header += 'Content-Type:' + FILE_TYPES_HEADER.get(file_type) + '\r\n'
+        data = get_file_data(resource[1])
+        http_header += 'Content-Length:' + str(len(data))
     http_header += '\r\n'
     http_response = http_header + data
-    client_socket.sendall(http_response)
+    print http_response
+    return http_response
+
+
+def valid_URI(uri):
+    """
+    ceack if the uri is valid and cange the uri to legal path
+    :uri: the URI
+    :retun: tuple of (TRUE/FALSE,path/error type)
+    """
+    if uri == '/':
+        return True, DEFAULT_URL + DEFEALT_FILE[1:]
+    elif uri in UNIQUE_URI:
+        return False, UNIQUE_URI.get(uri)
+    else:
+        return True, DEFAULT_URL + uri[1:]
 
 
 def validate_http_request(request):
@@ -92,26 +101,26 @@ def validate_http_request(request):
     the requested URL
     :param request: the request which was received from the client
     :return: a tuple of (True/False - depending if the request is valid,
-    the requested resource )
+    the requested resource ). if true add to the requested resource a path to the wanted file.
     """
     # TO DO: write function
+    responce = HTTP_VERSION + " "
     fileds = request.split('\r\n')
-    request_line = fileds[0].split(' ')
-    if not fileds.pop() == '':
+    fileds[0] = fileds[0].split(' ')
+    request_line = fileds[0][:]
+    is_valid, path = valid_URI(request_line[1])
+    if not is_valid:
+        responce += path
+    elif not fileds.pop() == '':
         return False, BAD_REQUEST
-    if not (fileds[1] == "" and fileds[-1] == ""):
+    elif not request_line[0] == REQUEST_CODE:
         return False, BAD_REQUEST
-    if request_line[1] == '/':
-        request_line[1] = DEFAULT_URL + DEFEALT_FILE
-    else:
-        request_line[1] = DEFAULT_URL + request_line[1]
-    if not request_line[0] == REQUEST_CODE:
-        return False, BAD_REQUEST
-    if not os.path.exists(request_line[1]):
+    elif not os.path.exists(path):
         return False, NOT_FOUND
-    if not request_line[2] == HTTP_VERSION:
+    elif not request_line[2] == HTTP_VERSION:
         return False, BAD_REQUEST
-    return True, fileds
+    else:
+        return True, (VALID_REQUEST, path)
 
 
 
@@ -126,15 +135,18 @@ def handle_client(client_socket):
     """
     print 'Client connected'
     while True:
-        # TO DO: insert code that receives client request
-        # ...
-        valid_http, resource = validate_http_request(fildes)
+        request = recv_http(client_socket)
+        print 'pas recv'
+        valid_http, resource = validate_http_request(request)
         if valid_http:
             print 'Got a valid HTTP request'
-            handle_client_request(resource, client_socket)
+            http_response = handle_client_request(resource, client_socket)
+            client_socket.sendall(http_response)
         else:
             print 'Error: Not a valid HTTP request'
-            break
+            print HTTP_VERSION + resource + '\r\n'
+            http_response = HTTP_VERSION + " " + resource + '\r\n\r\n'
+            client_socket.sendall(http_response)
     print 'Closing connection'
 
 
@@ -150,7 +162,8 @@ def main():
             client_socket, client_address = server_socket.accept()
             try:
                 print 'New connection received'
-                client_socket.settimeout(SOCKET_TIMEOUT)
+                if IS_TIMEOUT:
+                    client_socket.settimeout(SOCKET_TIMEOUT)
                 handle_client(client_socket)
             except socket.error as err:
                 print 'received socket exception - ' + str(err)
@@ -166,6 +179,6 @@ if __name__ == "__main__":
     assert validate_http_request('GET / HTTP/1.1\r\n\r\n')[0]
     assert not validate_http_request('GEV / HTTP/1.2\r\n\r\n')[0]
     assert not validate_http_request('GET /vv HTTP/1.1\r\n\r\n')[0]
-    assert validate_http_request('GET /css\\doremon.css HTTP/1.1\r\n\r\n')[0]
+    assert validate_http_request('GET /css\\doremon.css HTTP/1.1\r\nUpgrade-Insecure-Requests: 1\r\n\r\n')[0]
     main()
 
