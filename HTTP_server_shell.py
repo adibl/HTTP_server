@@ -16,16 +16,17 @@ HTTP_VERSION = 'HTTP/1.1'
 DEFAULT_URL = "D:\\adi\\Documents\\python\\HTTP_server\\webroot\\"
 REQUEST_CODE = 'GET'
 QUEUE_SIZE = 10
-UNIQUE_URI = {'/forbidden': '403 FORBIDDEN', '/moved': '302 MOVED TEMPORARILY',
+UNIQUE_URI = {'/forbidden': '403 FORBIDDEN',
               '/error': '500 INTERNAL SERVER ERROR'}
+MOVED_REQUEST = '/moved', '302 MOVED TEMPORARILY'
 BAD_REQUEST = '400 BAD REQUEST'
 NOT_FOUND = '404 NOT FOUND'
 VALID_REQUEST = '200 OK'
 IP = '0.0.0.0'
 PORT = 80
-MAX_PACKET = 1024
+MAX_PACKET = 1
 IS_TIMEOUT = True
-SOCKET_TIMEOUT = 0.5
+SOCKET_TIMEOUT = 2
 FILE_TYPES_HEADER = {'html': 'text/html;charset=utf-8', 'jpg': 'image/jpeg', 'css': 'text/css',
                      'js': 'text/javascript; charset=UTF-8', 'txt': 'text/plain', 'ico': "image/x-icon",
                      'gif': 'image/jpeg', 'png': 'image/png'}
@@ -39,6 +40,8 @@ def recv_http(client_socket):
     :return: return the http request thet receved from the client
     """
     request = client_socket.recv(MAX_PACKET)
+    while not '\r\n\r\n' in request:
+        request += client_socket.recv(MAX_PACKET)
     return request
 
 
@@ -67,8 +70,15 @@ def handle_client_request(resource, client_socket):
     data = ""
     http_header = HTTP_VERSION + " "
     is_valid, path = resource
-    if not is_valid:
-        http_header += path +'\r\n'
+    print 'ggggggggggggggggggggggggg'
+    print is_valid
+    print path
+    if is_valid == MOVED_REQUEST[1]:
+        print 'moved'
+        http_header += is_valid + '\r\n'
+        http_header += 'Location:/'
+    elif not is_valid:
+        http_header += path + '\r\n'
     else:
         file_type = path.split('.')[-1]
         http_header += VALID_REQUEST + '\r\n'
@@ -76,6 +86,7 @@ def handle_client_request(resource, client_socket):
         data = get_file_data(resource[1])
         http_header += 'Content-Length:' + str(len(data))
     http_header += '\r\n\r\n'
+    print http_header
     http_response = http_header + data
     return http_response
 
@@ -88,6 +99,10 @@ def valid_URI(uri):
     """
     if uri == '/':
         return True, DEFAULT_URL + DEFEALT_FILE[1:]
+    elif uri == MOVED_REQUEST[0]:
+        print 'is moved'
+        is_moved = True
+        return True, MOVED_REQUEST[1]
     elif uri in UNIQUE_URI:
         return False, UNIQUE_URI.get(uri)
     else:
@@ -112,6 +127,8 @@ def validate_http_request(request):
     is_valid, path = valid_URI(request_line[1])
     print is_valid
     print path
+    if path == MOVED_REQUEST[1]:
+        return True, (path, '')
     if not is_valid:
         return False, path
     elif not fileds.pop() == '':
@@ -142,6 +159,7 @@ def handle_client(client_socket):
         print 'rec:' + request
         print 'pas recv'
         valid_http, resource = validate_http_request(request)
+        print 'v'+str(valid_http)
         if valid_http:
             print 'Got a valid HTTP request'
             http_response = handle_client_request(resource, client_socket)

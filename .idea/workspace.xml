@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="01e9e610-4ef5-4d46-aa32-910bea829c10" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HTTP_server_shell.py" afterPath="$PROJECT_DIR$/HTTP_server_shell.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="HTTP_server.iws" />
@@ -14,7 +15,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CreatePatchCommitExecutor">
-    <option name="PATCH_PATH" value="" />
+    <option name="PATCH_PATH" value="D:\adi\Documents\python\HTTP_server" />
   </component>
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
@@ -28,7 +29,7 @@
       <file leaf-file-name="HTTP_server_shell.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="88" column="18" selection-start="2594" selection-end="2594" vertical-scroll-proportion="2.1874285" vertical-offset="0" max-vertical-offset="4290">
+            <state line="116" column="21" selection-start="3418" selection-end="3418" vertical-scroll-proportion="0.4465517" vertical-offset="2271" max-vertical-offset="4686">
               <folding />
             </state>
           </provider>
@@ -53,9 +54,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-7" />
-    <option name="width" value="974" />
-    <option name="height" value="1047" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -129,21 +131,21 @@
     <property name="SearchEverywhereHistory" value="" />
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="63" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="283" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="63" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="301" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="68" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="307" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="721" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="986" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="73" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="314" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="62" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="302" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="68" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="309" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="725" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="965" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../2_7" />
   </component>
@@ -367,28 +369,32 @@
       <created>1515778386929</created>
       <updated>1515778386929</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="have a move tumporerly bag">
+      <created>1515779854275</created>
+      <updated>1515779854275</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="974" height="1047" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14613779" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14583333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39893618" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982087" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33404255" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32978722" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3340358" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -415,7 +421,8 @@
     <MESSAGE value="have first connecsion with second packet bag" />
     <MESSAGE value="worked code, witout documentation" />
     <MESSAGE value="fix unique eri bag" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix unique eri bag" />
+    <MESSAGE value="have a move tumporerly bag" />
+    <option name="LAST_COMMIT_MESSAGE" value="have a move tumporerly bag" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -423,6 +430,20 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="121" column="31" selection-start="3720" selection-end="3720" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4290">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="88" column="18" selection-start="2594" selection-end="2594" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4290">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="32" column="0" selection-start="1050" selection-end="1050" vertical-scroll-proportion="0.0" vertical-offset="2111" max-vertical-offset="4180">
@@ -465,28 +486,29 @@
     </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1538" column="0" selection-start="60694" selection-end="60694" vertical-scroll-proportion="0.0" vertical-offset="32016" max-vertical-offset="32560">
-          <folding />
-        </state>
+        <state line="1538" column="0" selection-start="60694" selection-end="60694" vertical-scroll-proportion="0.0" vertical-offset="32016" max-vertical-offset="32560" />
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Downloads/HTTP_server_shell (1).py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="9" selection-start="353" selection-end="353" vertical-scroll-proportion="0.5247019" vertical-offset="0" max-vertical-offset="2750">
-          <folding />
-        </state>
+        <state line="14" column="9" selection-start="353" selection-end="353" vertical-scroll-proportion="0.5247019" vertical-offset="0" max-vertical-offset="2750" />
       </provider>
     </entry>
     <entry file="file://C:/Heights/PortableApps/PortablePython2.7.6.1/App/Lib/genericpath.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="0" selection-start="542" selection-end="542" vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="2420">
+        <state line="19" column="0" selection-start="542" selection-end="542" vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="2420" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/test/client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="25" selection-start="1232" selection-end="1232" vertical-scroll-proportion="0.6171617" vertical-offset="594" max-vertical-offset="3190">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="18" selection-start="2594" selection-end="2594" vertical-scroll-proportion="2.1874285" vertical-offset="0" max-vertical-offset="4290">
+        <state line="116" column="21" selection-start="3418" selection-end="3418" vertical-scroll-proportion="0.4465517" vertical-offset="2271" max-vertical-offset="4686">
           <folding />
         </state>
       </provider>
