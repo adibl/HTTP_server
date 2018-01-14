@@ -118,7 +118,7 @@ def validate_http_request(request):
         return False, BAD_REQUEST
     elif not request_line[0] == REQUEST_CODE:
         return False, BAD_REQUEST
-    elif not os.path.exists(path):
+    elif not os.path.isfile(path):
         return False, NOT_FOUND
     elif not request_line[2] == HTTP_VERSION:
         return False, BAD_REQUEST
@@ -128,7 +128,6 @@ def validate_http_request(request):
 
 def handle_client(client_socket):
     """
-    main function, handel all the client needs
     Handles client requests: verifies client's requests are legal HTTP, calls
     function to handle the requests
     :param client_socket: the socket for the communication with the client
