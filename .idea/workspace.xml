@@ -29,8 +29,10 @@
       <file leaf-file-name="HTTP_server_shell.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="13" selection-start="84" selection-end="84" vertical-scroll-proportion="0.18151815" vertical-offset="0" max-vertical-offset="4334">
-              <folding />
+            <state line="189" column="0" selection-start="6194" selection-end="6194" vertical-scroll-proportion="0.9273927" vertical-offset="3596" max-vertical-offset="4290">
+              <folding>
+                <element signature="e#71#84#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -85,6 +87,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -119,7 +122,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -385,14 +387,17 @@
       <created>1515947127134</created>
       <updated>1515947127134</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="minor cange">
+      <created>1515947233318</created>
+      <updated>1515947233318</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -405,11 +410,12 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -437,7 +443,8 @@
     <MESSAGE value="mid /moved" />
     <MESSAGE value="worked without documentation and names" />
     <MESSAGE value="pep8 + documentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="pep8 + documentation" />
+    <MESSAGE value="minor cange" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor cange" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -447,64 +454,91 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="189" column="79" selection-start="6192" selection-end="6192" vertical-scroll-proportion="0.0" vertical-offset="3750" max-vertical-offset="4334">
+          <folding>
+            <element signature="e#71#84#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="158" column="44" selection-start="5055" selection-end="5055" vertical-scroll-proportion="0.0" vertical-offset="3476" max-vertical-offset="4422">
-          <folding />
+          <folding>
+            <element signature="e#71#84#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="116" column="21" selection-start="3418" selection-end="3418" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4686">
-          <folding />
+          <folding>
+            <element signature="e#71#84#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="121" column="31" selection-start="3720" selection-end="3720" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4290">
-          <folding />
+          <folding>
+            <element signature="e#71#84#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="88" column="18" selection-start="2594" selection-end="2594" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4290">
-          <folding />
+          <folding>
+            <element signature="e#71#84#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="32" column="0" selection-start="1050" selection-end="1050" vertical-scroll-proportion="0.0" vertical-offset="2111" max-vertical-offset="4180">
-          <folding />
+          <folding>
+            <element signature="e#71#84#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="136" column="42" selection-start="4180" selection-end="4180" vertical-scroll-proportion="0.0" vertical-offset="2722" max-vertical-offset="4070">
-          <folding />
+          <folding>
+            <element signature="e#71#84#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="55" column="30" selection-start="1480" selection-end="1480" vertical-scroll-proportion="0.0" vertical-offset="1078" max-vertical-offset="3894">
-          <folding />
+          <folding>
+            <element signature="e#71#84#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="39" selection-start="430" selection-end="430" vertical-scroll-proportion="0.0" vertical-offset="308" max-vertical-offset="3432">
-          <folding />
+          <folding>
+            <element signature="e#71#84#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="146" column="71" selection-start="4524" selection-end="4524" vertical-scroll-proportion="0.0" vertical-offset="22" max-vertical-offset="3410">
-          <folding />
+          <folding>
+            <element signature="e#71#84#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -535,8 +569,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/HTTP_server_shell.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="84" selection-end="84" vertical-scroll-proportion="0.18151815" vertical-offset="0" max-vertical-offset="4334">
-          <folding />
+        <state line="189" column="0" selection-start="6194" selection-end="6194" vertical-scroll-proportion="0.9273927" vertical-offset="3596" max-vertical-offset="4290">
+          <folding>
+            <element signature="e#71#84#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -21,7 +21,7 @@ UNIQUE_URI = {'/forbidden': '403 FORBIDDEN', '/moved': MOVED_REQUEST,
 IP = '0.0.0.0'
 PORT = 80
 MAX_PACKET = 1
-IS_TIMEOUT = True
+IS_TIMEOUT = True  # False cancel the timeout, for telnet debug
 SOCKET_TIMEOUT = 0.5
 FILE_TYPES_HEADER = {'html': 'text/html;charset=utf-8', 'jpg': 'image/jpeg',
                      'css': 'text/css', 'js': 'text/javascript; charset=UTF-8',
@@ -137,8 +137,6 @@ def handle_client(client_socket):
     print 'Client connected'
     while True:
         request = recv_http(client_socket)
-        print 'rec:' + request
-        print 'pas recv'
         valid_http, resource = validate_http_request(request)
         if valid_http:
             print 'Got a valid HTTP request'
