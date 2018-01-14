@@ -3,10 +3,8 @@
  Author: adi bleyer
  basic http server code
 """
-# TO DO: import modules
 import socket
 import os
-# TO DO: set constants
 
 DEFEALT_FILE = '/index.html'
 HTTP_VERSION = 'HTTP/1.1'
@@ -110,8 +108,6 @@ def validate_http_request(request):
     the requested resource ).
     if true add to the requested resource a path to the wanted file.
     """
-    # TO DO: write function
-    responce = HTTP_VERSION + ENF_FILED_CHAR
     fileds = request.split(END_LINE_CHAR)
     fileds[0] = fileds[0].split(ENF_FILED_CHAR)
     request_line = fileds[0][:]
