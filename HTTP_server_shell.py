@@ -16,7 +16,7 @@ BAD_REQUEST = '400 BAD REQUEST'
 NOT_FOUND = '404 NOT FOUND'
 VALID_REQUEST = '200 OK'
 UNIQUE_URI = {'/forbidden': '403 FORBIDDEN', '/moved': MOVED_REQUEST,
-              '/error': '500 INTERNAL SERVER ERROR'}
+              '/error': '500 INTERNAL SERVER ERROR', '/calculate-next': VALID_REQUEST, '/calculate-area': VALID_REQUEST}
 
 IP = '0.0.0.0'
 PORT = 80
@@ -33,15 +33,45 @@ ENT_HTTP_CHARS = '\r\n\r\n'
 TYPE_HEADER = 'Content-Type:'
 LENGTH_HEADER = 'Content-Length:'
 LOCATION_HEADER = 'Location:/'
-VALID_PARAMS = ['num']
+VALID_PARAMS = {'/calculate-next': ['num'], '/calculate-area': ['height', 'width']}
 
 
-def handel_params(params):
+def handel_params(url):
     """
     handel all the params
-    :return: (TRUE/FALSE,data/error code)
+    :url: the request valid url
+    :return: (false/data) if it is nt valid return flse
+     and if it is return the number to send(return string)
     """
-    pass
+    uri, params = url
+    params = params.split('&')
+    fileds = []
+    for param in params:
+        fileds.append(param.split("="))
+
+    if not VALID_PARAMS.has_key(uri):
+        print 'not found'
+        return False
+    for param, filed in zip(VALID_PARAMS.get(uri), fileds):
+        if not param == filed[0] or filed[0].isdigit():
+            print filed
+            print param
+            print 'not fileds'
+            return False
+    for filed in fileds:
+        if not filed[1].isdigit():
+            return False
+    else:
+        print fileds
+        if len(fileds) == 1:
+            print fileds
+            return str(int(fileds[0][1])+1)
+        elif len(fileds) == 2:
+            return str(float(fileds[0][1]) * float(fileds[1][1])/2)
+        else:
+            return False
+
+
 
 
 def recv_http(client_socket):
@@ -77,7 +107,6 @@ def handel_file_sent(resource):
     :param resource: the required resource
     :return: http request ready to send
     """
-    print resource
     data = ""
     http_header = HTTP_VERSION + END_FILED_CHAR
     path = resource
@@ -140,25 +169,35 @@ def handle_client(client_socket):
     while True:
         request = recv_http(client_socket)
         is_valid = read_request(request)
-        is_valid_uri, resource = valid_URI(request.split('\r\n')[0].split(' ')[1])
+        url = request.split('\r\n')[0].split(' ')[1]
+        url = url.split('?')
+        is_valid_uri, resource = valid_URI(url[0])
         if is_valid and is_valid_uri:
             print 'Got a valid HTTP request'
-            print request
             if resource == MOVED_REQUEST:
                 http_response = HTTP_VERSION + END_FILED_CHAR + resource + END_LINE_CHAR
                 http_response += LOCATION_HEADER + END_LINE_CHAR
                 http_response += END_FILED_CHAR
-                print resource
+            elif len(url) == 2:
+                data = handel_params(url)
+                print data
+                if data is False:
+                    http_response = HTTP_VERSION + END_FILED_CHAR + BAD_REQUEST + END_LINE_CHAR
+                    http_response += LOCATION_HEADER + END_LINE_CHAR
+                    http_response += END_FILED_CHAR
+                else:
+                    http_response = HTTP_VERSION + END_FILED_CHAR + VALID_REQUEST + END_LINE_CHAR
+                    http_response += TYPE_HEADER + 'text/plain' + END_LINE_CHAR
+
+                    http_response += LENGTH_HEADER + str(len(data)) +END_LINE_CHAR
+                    http_response += END_LINE_CHAR
+                    http_response += data
             elif os.path.isfile(resource):
                 http_response = handel_file_sent(resource)
             else:
                 http_response = HTTP_VERSION + END_FILED_CHAR + resource
                 http_response += END_LINE_CHAR
                 http_response += END_LINE_CHAR
-            err = client_socket.sendall(http_response)
-
-            if err is not None:
-                print 'err:'+err
         else:
             # 400 err
             print 'Error: Not a valid HTTP request'
@@ -169,7 +208,7 @@ def handle_client(client_socket):
                 http_response += BAD_REQUEST
             http_response += END_LINE_CHAR
             http_response += END_LINE_CHAR
-            client_socket.sendall(http_response)
+        client_socket.sendall(http_response)
     print 'Closing connection'
 
 
