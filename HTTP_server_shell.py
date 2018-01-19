@@ -28,7 +28,7 @@ FILE_TYPES_HEADER = {'html': 'text/html;charset=utf-8', 'jpg': 'image/jpeg',
                      'txt': 'text/plain', 'ico': "image/x-icon",
                      'gif': 'image/jpeg', 'png': 'image/png'}
 END_LINE_CHAR = '\r\n'
-ENF_FILED_CHAR = ' '
+END_FILED_CHAR = ' '
 ENT_HTTP_CHARS = '\r\n\r\n'
 TYPE_HEADER = 'Content-Type:'
 LENGTH_HEADER = 'Content-Length:'
@@ -79,7 +79,7 @@ def handel_file_sent(resource):
     """
     print resource
     data = ""
-    http_header = HTTP_VERSION + ENF_FILED_CHAR
+    http_header = HTTP_VERSION + END_FILED_CHAR
     path = resource
     file_type = path.split('.')[-1]
     http_header += VALID_REQUEST + END_LINE_CHAR
@@ -98,11 +98,9 @@ def valid_URI(uri):
     :uri: the URI
     :return: tuple of (TRUE/FALSE,path/error type)
     """
-    print 'hh'+uri
     if uri == '/':
         return True, DEFAULT_URL + DEFEALT_FILE[1:]
     elif uri in UNIQUE_URI:
-        print 'unick'
         return True, UNIQUE_URI.get(uri)
     else:
         uri = uri.replace('/', '\\')
@@ -114,15 +112,12 @@ def valid_URI(uri):
 
 def read_request(request):
     """
-    Check if request is a valid HTTP request and returns TRUE / FALSE and
-    the extra data
+    Check if request is a valid HTTP request and returns TRUE / FALSE
     :param request: the request which was received from the client
-    :return: a tuple of (True/False - depending if you need to send file or not + extra data
-    if true add to the requested resource a path to the wanted file.
-    if false add the ststus code and string.
+    :return:True/False
     """
     fileds = request.split(END_LINE_CHAR)
-    fileds[0] = fileds[0].split(ENF_FILED_CHAR)
+    fileds[0] = fileds[0].split(END_FILED_CHAR)
     request_line = fileds[0][:]
     if not fileds.pop() == '':
         return False
@@ -150,14 +145,14 @@ def handle_client(client_socket):
             print 'Got a valid HTTP request'
             print request
             if resource == MOVED_REQUEST:
-                http_response = HTTP_VERSION + ENF_FILED_CHAR + resource + END_LINE_CHAR
+                http_response = HTTP_VERSION + END_FILED_CHAR + resource + END_LINE_CHAR
                 http_response += LOCATION_HEADER + END_LINE_CHAR
-                http_response += ENF_FILED_CHAR
+                http_response += END_FILED_CHAR
                 print resource
             elif os.path.isfile(resource):
                 http_response = handel_file_sent(resource)
             else:
-                http_response = HTTP_VERSION + ENF_FILED_CHAR + resource
+                http_response = HTTP_VERSION + END_FILED_CHAR + resource
                 http_response += END_LINE_CHAR
                 http_response += END_LINE_CHAR
             err = client_socket.sendall(http_response)
@@ -165,10 +160,13 @@ def handle_client(client_socket):
             if err is not None:
                 print 'err:'+err
         else:
+            # 400 err
             print 'Error: Not a valid HTTP request'
-            print is_valid
-            print is_valid_uri
-            http_response = HTTP_VERSION + resource + BAD_REQUEST
+            http_response = HTTP_VERSION + END_FILED_CHAR
+            if is_valid:
+                http_response += NOT_FOUND
+            else:
+                http_response += BAD_REQUEST
             http_response += END_LINE_CHAR
             http_response += END_LINE_CHAR
             client_socket.sendall(http_response)
