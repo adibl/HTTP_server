@@ -9,14 +9,15 @@ import os
 DEFEALT_FILE = '/index.html'
 HTTP_VERSION = 'HTTP/1.1'
 DEFAULT_URL = "webroot\\"
-REQUEST_CODE = 'GET'
+REQUEST_CODE = ['GET', 'POST']
+GET, POST = REQUEST_CODE
 QUEUE_SIZE = 10
 MOVED_REQUEST = '302 MOVED TEMPORARILY'
 BAD_REQUEST = '400 BAD REQUEST'
 NOT_FOUND = '404 NOT FOUND'
 VALID_REQUEST = '200 OK'
-VALID_PARAM_REQUESTS = ['/calculate-next', '/calculate-area', '/image']
-UNIQUE_URI = {'/forbidden': '403 FORBIDDEN', '/moved': MOVED_REQUEST,
+VALID_PARAM_REQUESTS = ['/calculate-next', '/calculate-area', '/upload']
+UNIQUE_URI = {'/forbidden': '403 FORBIDDEN', '/moved': MOVED_REQUEST, '/image': VALID_REQUEST,
               '/error': '500 INTERNAL SERVER ERROR', '/calculate-next': VALID_REQUEST,
               '/calculate-area': VALID_REQUEST, VALID_PARAM_REQUESTS[2]: VALID_REQUEST}
 
@@ -36,8 +37,53 @@ TYPE_HEADER = 'Content-Type:'
 LENGTH_HEADER = 'Content-Length:'
 LOCATION_HEADER = 'Location:/'
 
-VALID_PARAMS = {'/calculate-next': ['num'], '/calculate-area': ['height', 'width'], VALID_PARAM_REQUESTS[2]: ['image-name']}
+VALID_PARAMS = {'/calculate-next': ['num'], '/calculate-area': ['height', 'width'], '/image': ['image-name']}
 UPLOED_URI = 'upload\\'
+
+def get_data(lengh, client_socket):
+    """
+
+    :param lengh: the data lengh
+    :param client_socket: the socket to get the data from
+    :return: the data
+    """
+    data = client_socket.recv(lengh)
+    while len(data) < lengh:
+        data += client_socket.recv(1)
+    return data
+
+
+def handel_post(request, client_socket):
+    """
+    hendel the POST request
+    :request: the client request, full and unsplied
+    :return: return the responce of False if the request not valid
+    """
+    length = None
+    lines = request.split(END_LINE_CHAR)
+    for line in lines:
+        if line.count(':') == 1:
+            name, data = line.split(':')
+            if name == LENGTH_HEADER[:-1]:
+                length = data
+    if length is None:
+        return False
+    data_start = request.find(ENT_HTTP_CHARS)
+    data_end = len(request)
+    data = get_data(int(length)-(data_end-data_start), client_socket)
+
+    uri, param = lines[0].split(' ')[1].split('?')
+    param = param.split('=')
+    print param
+    if not uri == VALID_PARAM_REQUESTS[2]:
+        return False
+    print DEFAULT_URL + UPLOED_URI + param[1]
+    with open(DEFAULT_URL + UPLOED_URI + param[1], 'wb') as hendel:
+        hendel.write(data)
+    return 'HTTP/1.1 200 OK\r\n\r\n'
+
+
+
 
 
 def handel_params(url):
@@ -47,6 +93,7 @@ def handel_params(url):
     :return: (false/data) if it is nt valid return flse
      and if it is return the number to send(return string)
     """
+    print url
     uri, params = url
     params = params.split('&')
     fileds = []
@@ -55,7 +102,8 @@ def handel_params(url):
     if not VALID_PARAMS.has_key(uri):
         return False
     for param, filed in zip(VALID_PARAMS.get(uri), fileds):
-        if not param == filed[0] or filed[0].isdigit():
+        print 'gg'+str(param) +" " + str(filed)
+        if not param == filed[0]:
             return False
 
     else:
@@ -69,8 +117,9 @@ def handel_params(url):
                 if not filed[1].isdigit():
                     return False
             return str(float(fileds[0][1]) * float(fileds[1][1])/2)
-        elif uri == VALID_PARAM_REQUESTS[2]:
+        elif uri == '/image':
             file_name = DEFAULT_URL + UPLOED_URI + fileds[0][1]
+            print file_name
             if not os.path.isfile(file_name):
                 return False
             return get_file_data(file_name)
@@ -156,7 +205,7 @@ def read_request(request):
     request_line = fileds[0][:]
     if not fileds.pop() == '':
         return False
-    elif not request_line[0] == REQUEST_CODE:
+    elif not request_line[0] in REQUEST_CODE:
         return False
     elif not request_line[2] == HTTP_VERSION:
         return False
@@ -180,7 +229,10 @@ def handle_client(client_socket):
         is_valid_uri, resource = valid_URI(url[0])
         if is_valid and is_valid_uri:
             print 'Got a valid HTTP request'
-            if resource == MOVED_REQUEST:
+            if request.split('\r\n')[0].split(' ')[0] == 'POST':
+                http_response = handel_post(request, client_socket)
+                print 'post responce'+str(http_response)
+            elif resource == MOVED_REQUEST:
                 http_response = HTTP_VERSION + END_FILED_CHAR + resource + END_LINE_CHAR
                 http_response += LOCATION_HEADER + END_LINE_CHAR
                 http_response += END_FILED_CHAR
@@ -205,7 +257,7 @@ def handle_client(client_socket):
                 http_response += END_LINE_CHAR
                 http_response += END_LINE_CHAR
         else:
-            # 400 err
+
             print 'Error: Not a valid HTTP request'
             http_response = HTTP_VERSION + END_FILED_CHAR
             if is_valid:
