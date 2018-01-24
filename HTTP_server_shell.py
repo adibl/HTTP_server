@@ -15,8 +15,10 @@ MOVED_REQUEST = '302 MOVED TEMPORARILY'
 BAD_REQUEST = '400 BAD REQUEST'
 NOT_FOUND = '404 NOT FOUND'
 VALID_REQUEST = '200 OK'
+VALID_PARAM_REQUESTS = ['/calculate-next', '/calculate-area', '/image']
 UNIQUE_URI = {'/forbidden': '403 FORBIDDEN', '/moved': MOVED_REQUEST,
-              '/error': '500 INTERNAL SERVER ERROR', '/calculate-next': VALID_REQUEST, '/calculate-area': VALID_REQUEST}
+              '/error': '500 INTERNAL SERVER ERROR', '/calculate-next': VALID_REQUEST,
+              '/calculate-area': VALID_REQUEST, VALID_PARAM_REQUESTS[2]: VALID_REQUEST}
 
 IP = '0.0.0.0'
 PORT = 80
@@ -33,7 +35,9 @@ ENT_HTTP_CHARS = '\r\n\r\n'
 TYPE_HEADER = 'Content-Type:'
 LENGTH_HEADER = 'Content-Length:'
 LOCATION_HEADER = 'Location:/'
-VALID_PARAMS = {'/calculate-next': ['num'], '/calculate-area': ['height', 'width']}
+
+VALID_PARAMS = {'/calculate-next': ['num'], '/calculate-area': ['height', 'width'], VALID_PARAM_REQUESTS[2]: ['image-name']}
+UPLOED_URI = 'upload\\'
 
 
 def handel_params(url):
@@ -48,26 +52,28 @@ def handel_params(url):
     fileds = []
     for param in params:
         fileds.append(param.split("="))
-
     if not VALID_PARAMS.has_key(uri):
-        print 'not found'
         return False
     for param, filed in zip(VALID_PARAMS.get(uri), fileds):
         if not param == filed[0] or filed[0].isdigit():
-            print filed
-            print param
-            print 'not fileds'
             return False
-    for filed in fileds:
-        if not filed[1].isdigit():
-            return False
+
     else:
-        print fileds
-        if len(fileds) == 1:
-            print fileds
+        if uri == VALID_PARAM_REQUESTS[0]:
+            for filed in fileds:
+                if not filed[1].isdigit():
+                    return False
             return str(int(fileds[0][1])+1)
-        elif len(fileds) == 2:
+        elif uri == VALID_PARAM_REQUESTS[1]:
+            for filed in fileds:
+                if not filed[1].isdigit():
+                    return False
             return str(float(fileds[0][1]) * float(fileds[1][1])/2)
+        elif uri == VALID_PARAM_REQUESTS[2]:
+            file_name = DEFAULT_URL + UPLOED_URI + fileds[0][1]
+            if not os.path.isfile(file_name):
+                return False
+            return get_file_data(file_name)
         else:
             return False
 
