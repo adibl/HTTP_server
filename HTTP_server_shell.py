@@ -61,26 +61,25 @@ def handel_post(request, client_socket):
     """
     length = None
     lines = request.split(END_LINE_CHAR)
-    for line in lines:
+    data_start = request.find(ENT_HTTP_CHARS)
+    for line in request.split('\r\n'):
         if line.count(':') == 1:
             name, data = line.split(':')
             if name == LENGTH_HEADER[:-1]:
                 length = data
-    if length is None:
-        return False
-    data_start = request.find(ENT_HTTP_CHARS)
     data_end = len(request)
-    data = get_data(int(length)-(data_end-data_start), client_socket)
-
+    data_len = int(length)-(data_end-data_start)
+    if data_len <= 0:
+        return False
+    data = get_data(data_len, client_socket)
     uri, param = lines[0].split(' ')[1].split('?')
     param = param.split('=')
     print param
     if not uri == VALID_PARAM_REQUESTS[2]:
         return False
-    print DEFAULT_URL + UPLOED_URI + param[1]
     with open(DEFAULT_URL + UPLOED_URI + param[1], 'wb') as hendel:
         hendel.write(data)
-    return 'HTTP/1.1 200 OK\r\n\r\n'
+    return VALID_REQUEST
 
 
 
@@ -102,29 +101,26 @@ def handel_params(url):
     if not VALID_PARAMS.has_key(uri):
         return False
     for param, filed in zip(VALID_PARAMS.get(uri), fileds):
-        print 'gg'+str(param) +" " + str(filed)
         if not param == filed[0]:
             return False
-
-    else:
-        if uri == VALID_PARAM_REQUESTS[0]:
-            for filed in fileds:
-                if not filed[1].isdigit():
-                    return False
-            return str(int(fileds[0][1])+1)
-        elif uri == VALID_PARAM_REQUESTS[1]:
-            for filed in fileds:
-                if not filed[1].isdigit():
-                    return False
-            return str(float(fileds[0][1]) * float(fileds[1][1])/2)
-        elif uri == '/image':
-            file_name = DEFAULT_URL + UPLOED_URI + fileds[0][1]
-            print file_name
-            if not os.path.isfile(file_name):
+    if uri == VALID_PARAM_REQUESTS[0]:
+        for filed in fileds:
+            if not filed[1].isdigit():
                 return False
-            return get_file_data(file_name)
-        else:
+        return str(int(fileds[0][1])+1)
+    elif uri == VALID_PARAM_REQUESTS[1]:
+        for filed in fileds:
+            if not filed[1].isdigit():
+                return False
+        return str(float(fileds[0][1]) * float(fileds[1][1])/2)
+    elif uri == '/image':
+        file_name = DEFAULT_URL + UPLOED_URI + fileds[0][1]
+        print file_name
+        if not os.path.isfile(file_name):
             return False
+        return get_file_data(file_name)
+    else:
+        return False
 
 
 
@@ -200,17 +196,34 @@ def read_request(request):
     :param request: the request which was received from the client
     :return:True/False
     """
+    if END_LINE_CHAR not in request or END_FILED_CHAR not in request:
+        return False
     fileds = request.split(END_LINE_CHAR)
     fileds[0] = fileds[0].split(END_FILED_CHAR)
     request_line = fileds[0][:]
-    if not fileds.pop() == '':
+    print request_line
+    if not len(request_line) == 3:
+        return False
+    elif not fileds.pop() == '':
         return False
     elif not request_line[0] in REQUEST_CODE:
         return False
     elif not request_line[2] == HTTP_VERSION:
         return False
-    else:
-        return True
+    for line in fileds:
+        if line.count(':') == 1:
+            name, data = line.split(':')
+            data = data.replace(' ','')
+            if name == LENGTH_HEADER[:-1]:
+                if not data.isdigit():
+                    return False
+            if name == TYPE_HEADER[:-1]:
+                print str(FILE_TYPES_HEADER.values())
+                if data not in FILE_TYPES_HEADER.values():
+                    print 'not type'
+                    print data
+                    return False
+    return True
 
 
 def handle_client(client_socket):
@@ -223,15 +236,34 @@ def handle_client(client_socket):
     print 'Client connected'
     while True:
         request = recv_http(client_socket)
+        print request
         is_valid = read_request(request)
-        url = request.split('\r\n')[0].split(' ')[1]
-        url = url.split('?')
-        is_valid_uri, resource = valid_URI(url[0])
+        if is_valid:
+            url = request.split('\r\n')[0].split(' ')[1]
+            if '?' in url:
+                url = url.split('?')
+                uri = url[0]
+            else:
+                uri = url
+            is_valid_uri, resource = valid_URI(uri)
+        else:
+            is_valid_uri = False
+            resource = BAD_REQUEST
         if is_valid and is_valid_uri:
             print 'Got a valid HTTP request'
             if request.split('\r\n')[0].split(' ')[0] == 'POST':
-                http_response = handel_post(request, client_socket)
-                print 'post responce'+str(http_response)
+                data = handel_post(request, client_socket)
+                if data is False:
+                    http_response = HTTP_VERSION + END_FILED_CHAR + BAD_REQUEST + END_LINE_CHAR
+                    http_response += END_FILED_CHAR
+                else:
+                    http_response = HTTP_VERSION + END_FILED_CHAR + VALID_REQUEST + END_LINE_CHAR
+                    http_response += TYPE_HEADER + 'text/plain' + END_LINE_CHAR
+
+                    http_response += LENGTH_HEADER + str(len(data)) +END_LINE_CHAR
+                    http_response += END_LINE_CHAR
+                    http_response += data
+
             elif resource == MOVED_REQUEST:
                 http_response = HTTP_VERSION + END_FILED_CHAR + resource + END_LINE_CHAR
                 http_response += LOCATION_HEADER + END_LINE_CHAR

@@ -1,0 +1,18 @@
+# regolar request, ceacks if you do it correctly 
+GET / HTTP/1.1
+
+
+# not valid uri NOT FOUND
+GET /nn HTTP/1.1
+
+# params and not valid uri NOT FOUND
+GET /nn?num=5 HTTP/1.1 
+
+# dont get or post BAD REQUEST
+VVV / HTTP/1.1
+
+
+#empty request BAD REQUEST
+
+#post with no data
+POST 
