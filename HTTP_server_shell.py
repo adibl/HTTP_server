@@ -17,9 +17,11 @@ BAD_REQUEST = '400 BAD REQUEST'
 NOT_FOUND = '404 NOT FOUND'
 VALID_REQUEST = '200 OK'
 VALID_PARAM_REQUESTS = ['/calculate-next', '/calculate-area', '/upload']
-UNIQUE_URI = {'/forbidden': '403 FORBIDDEN', '/moved': MOVED_REQUEST, '/image': VALID_REQUEST,
-              '/error': '500 INTERNAL SERVER ERROR', '/calculate-next': VALID_REQUEST,
-              '/calculate-area': VALID_REQUEST, VALID_PARAM_REQUESTS[2]: VALID_REQUEST}
+UNIQUE_URI = {'/forbidden': '403 FORBIDDEN', '/moved': MOVED_REQUEST,
+              '/image': VALID_REQUEST, '/error': '500 INTERNAL SERVER ERROR',
+              '/calculate-next': VALID_REQUEST,
+              '/calculate-area': VALID_REQUEST,
+              VALID_PARAM_REQUESTS[2]: VALID_REQUEST}
 
 IP = '0.0.0.0'
 PORT = 80
@@ -37,12 +39,14 @@ TYPE_HEADER = 'Content-Type:'
 LENGTH_HEADER = 'Content-Length:'
 LOCATION_HEADER = 'Location:/'
 
-VALID_PARAMS = {'/calculate-next': ['num'], '/calculate-area': ['height', 'width'], '/image': ['image-name']}
+VALID_PARAMS = {'/calculate-next': ['num'],
+                '/calculate-area': ['height', 'width'],
+                '/image': ['image-name']}
 UPLOED_URI = 'upload\\'
+
 
 def get_data(lengh, client_socket):
     """
-
     :param lengh: the data lengh
     :param client_socket: the socket to get the data from
     :return: the data
@@ -74,15 +78,11 @@ def handel_post(request, client_socket):
     data = get_data(data_len, client_socket)
     uri, param = lines[0].split(' ')[1].split('?')
     param = param.split('=')
-    print param
     if not uri == VALID_PARAM_REQUESTS[2]:
         return False
     with open(DEFAULT_URL + UPLOED_URI + param[1], 'wb') as hendel:
         hendel.write(data)
     return VALID_REQUEST
-
-
-
 
 
 def handel_params(url):
@@ -92,7 +92,6 @@ def handel_params(url):
     :return: (false/data) if it is nt valid return flse
      and if it is return the number to send(return string)
     """
-    print url
     uri, params = url
     params = params.split('&')
     fileds = []
@@ -115,14 +114,11 @@ def handel_params(url):
         return str(float(fileds[0][1]) * float(fileds[1][1])/2)
     elif uri == '/image':
         file_name = DEFAULT_URL + UPLOED_URI + fileds[0][1]
-        print file_name
         if not os.path.isfile(file_name):
             return False
         return get_file_data(file_name)
     else:
         return False
-
-
 
 
 def recv_http(client_socket):
@@ -201,7 +197,6 @@ def read_request(request):
     fileds = request.split(END_LINE_CHAR)
     fileds[0] = fileds[0].split(END_FILED_CHAR)
     request_line = fileds[0][:]
-    print request_line
     if not len(request_line) == 3:
         return False
     elif not fileds.pop() == '':
@@ -213,15 +208,12 @@ def read_request(request):
     for line in fileds:
         if line.count(':') == 1:
             name, data = line.split(':')
-            data = data.replace(' ','')
+            data = data.replace(' ', '')
             if name == LENGTH_HEADER[:-1]:
                 if not data.isdigit():
                     return False
             if name == TYPE_HEADER[:-1]:
-                print str(FILE_TYPES_HEADER.values())
                 if data not in FILE_TYPES_HEADER.values():
-                    print 'not type'
-                    print data
                     return False
     return True
 
@@ -236,7 +228,6 @@ def handle_client(client_socket):
     print 'Client connected'
     while True:
         request = recv_http(client_socket)
-        print request
         is_valid = read_request(request)
         if is_valid:
             url = request.split('\r\n')[0].split(' ')[1]
@@ -254,32 +245,37 @@ def handle_client(client_socket):
             if request.split('\r\n')[0].split(' ')[0] == 'POST':
                 data = handel_post(request, client_socket)
                 if data is False:
-                    http_response = HTTP_VERSION + END_FILED_CHAR + BAD_REQUEST + END_LINE_CHAR
-                    http_response += END_FILED_CHAR
+                    http_response = HTTP_VERSION + END_FILED_CHAR + BAD_REQUEST
+                    http_response += END_LINE_CHAR + END_FILED_CHAR
                 else:
-                    http_response = HTTP_VERSION + END_FILED_CHAR + VALID_REQUEST + END_LINE_CHAR
+                    http_response = HTTP_VERSION + END_FILED_CHAR
+                    http_response += VALID_REQUEST
+                    http_response += END_FILED_CHAR
                     http_response += TYPE_HEADER + 'text/plain' + END_LINE_CHAR
-
-                    http_response += LENGTH_HEADER + str(len(data)) +END_LINE_CHAR
+                    http_response += LENGTH_HEADER + str(len(data))
+                    http_response += END_LINE_CHAR
                     http_response += END_LINE_CHAR
                     http_response += data
 
             elif resource == MOVED_REQUEST:
-                http_response = HTTP_VERSION + END_FILED_CHAR + resource + END_LINE_CHAR
+                http_response = HTTP_VERSION + END_FILED_CHAR + resource
+                http_response += END_LINE_CHAR
                 http_response += LOCATION_HEADER + END_LINE_CHAR
                 http_response += END_FILED_CHAR
             elif len(url) == 2:
                 data = handel_params(url)
-                print data
                 if data is False:
-                    http_response = HTTP_VERSION + END_FILED_CHAR + BAD_REQUEST + END_LINE_CHAR
+                    http_response = HTTP_VERSION + END_FILED_CHAR + BAD_REQUEST
+                    http_response += END_LINE_CHAR
                     http_response += LOCATION_HEADER + END_LINE_CHAR
                     http_response += END_FILED_CHAR
                 else:
-                    http_response = HTTP_VERSION + END_FILED_CHAR + VALID_REQUEST + END_LINE_CHAR
+                    http_response = HTTP_VERSION + END_FILED_CHAR
+                    http_response += VALID_REQUEST + END_LINE_CHAR
                     http_response += TYPE_HEADER + 'text/plain' + END_LINE_CHAR
 
-                    http_response += LENGTH_HEADER + str(len(data)) +END_LINE_CHAR
+                    http_response += LENGTH_HEADER + str(len(data))
+                    http_response += END_LINE_CHAR
                     http_response += END_LINE_CHAR
                     http_response += data
             elif os.path.isfile(resource):
@@ -331,5 +327,6 @@ if __name__ == "__main__":
     assert read_request('GET / HTTP/1.1\r\n\r\n')
     assert not read_request('GEV / HTTP/1.2\r\n\r\n')
     assert not valid_URI('/vv')[0]
-    assert read_request('GET /css\\doremon.css HTTP/1.1\r\nUpgrade-Insecure-Requests: 1\r\n\r\n')
+    assert read_request('GET /css\\doremon.css HTTP/1.1'
+                        '\r\nUpgrade-Insecure-Requests: 1\r\n\r\n')
     main()

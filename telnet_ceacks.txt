@@ -15,4 +15,10 @@ VVV / HTTP/1.1
 #empty request BAD REQUEST
 
 #post with no data
-POST 
+POST /upload HTTP/1.1
+Content-Type:text/plain
+Content-Length:0
+
+POST /upload HTTP/1.1
+Content-Type:text/plain
+Content-Length:a
