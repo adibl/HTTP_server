@@ -22,7 +22,6 @@ UNIQUE_URI = {'/forbidden': '403 FORBIDDEN', '/moved': MOVED_REQUEST,
               '/calculate-next': VALID_REQUEST,
               '/calculate-area': VALID_REQUEST,
               VALID_PARAM_REQUESTS[2]: VALID_REQUEST}
-
 IP = '0.0.0.0'
 PORT = 80
 MAX_PACKET = 1
@@ -38,34 +37,35 @@ ENT_HTTP_CHARS = '\r\n\r\n'
 TYPE_HEADER = 'Content-Type:'
 LENGTH_HEADER = 'Content-Length:'
 LOCATION_HEADER = 'Location:/'
-
 VALID_PARAMS = {'/calculate-next': ['num'],
                 '/calculate-area': ['height', 'width'],
                 '/image': ['image-name']}
 UPLOED_URI = 'upload\\'
 
 
-def get_data(lengh, client_socket):
+def get_data(length, client_socket):
     """
-    :param lengh: the data lengh
+    :param length: the data length
     :param client_socket: the socket to get the data from
     :return: the data
     """
-    data = client_socket.recv(lengh)
-    while len(data) < lengh:
-        data += client_socket.recv(1)
+    data = client_socket.recv(length)
+    last = data
+    while len(data) < length or last == "":
+        last = client_socket.recv(1)
+        data += last
     return data
 
 
 def handel_post(request, client_socket):
     """
-    hendel the POST request
-    :request: the client request, full and unsplied
-    :return: return the responce of False if the request not valid
+    handel the POST request
+    :request: the client request, full and not split.
+    :return: return the response of False if the request not valid
     """
     length = None
     lines = request.split(END_LINE_CHAR)
-    data_start = request.find(ENT_HTTP_CHARS)
+    data_start = request.find(ENT_HTTP_CHARS) + 4
     for line in request.split('\r\n'):
         if line.count(':') == 1:
             name, data = line.split(':')
@@ -89,7 +89,7 @@ def handel_params(url):
     """
     handel all the params
     :url: the request valid url
-    :return: (false/data) if it is nt valid return flse
+    :return: (false/data) if it is not valid return false
      and if it is return the number to send(return string)
     """
     uri, params = url
@@ -123,7 +123,7 @@ def handel_params(url):
 
 def recv_http(client_socket):
     """
-    need cange
+    need change
     recv an http request
     :client_socket: the client socket
     :return: return the http request that received from the client
@@ -154,7 +154,6 @@ def handel_file_sent(resource):
     :param resource: the required resource
     :return: http request ready to send
     """
-    data = ""
     http_header = HTTP_VERSION + END_FILED_CHAR
     path = resource
     file_type = path.split('.')[-1]
@@ -243,19 +242,15 @@ def handle_client(client_socket):
         if is_valid and is_valid_uri:
             print 'Got a valid HTTP request'
             if request.split('\r\n')[0].split(' ')[0] == 'POST':
-                data = handel_post(request, client_socket)
-                if data is False:
+                status_code = handel_post(request, client_socket)
+                if status_code is False:
                     http_response = HTTP_VERSION + END_FILED_CHAR + BAD_REQUEST
                     http_response += END_LINE_CHAR + END_FILED_CHAR
                 else:
                     http_response = HTTP_VERSION + END_FILED_CHAR
-                    http_response += VALID_REQUEST
+                    http_response += status_code
                     http_response += END_FILED_CHAR
-                    http_response += TYPE_HEADER + 'text/plain' + END_LINE_CHAR
-                    http_response += LENGTH_HEADER + str(len(data))
-                    http_response += END_LINE_CHAR
-                    http_response += END_LINE_CHAR
-                    http_response += data
+                    http_response += END_FILED_CHAR
 
             elif resource == MOVED_REQUEST:
                 http_response = HTTP_VERSION + END_FILED_CHAR + resource
